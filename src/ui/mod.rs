@@ -6,8 +6,9 @@ use crossterm::{
     execute,
     style::{Color, Print, ResetColor, SetForegroundColor},
 };
+use rand::Error;
 
-pub type MenuFunction = fn();
+pub type MenuFunction = fn() -> Result<(), std::io::Error>;
 pub type Menu = BTreeMap<&'static str, MenuItem>;
 
 pub struct MenuItem {
@@ -38,7 +39,7 @@ pub fn print_header(title: &str, phrase: &str) {
     println!("{}", phrase);
 }
 
-pub fn print_menu(menu: &Menu) {
+pub fn print_menu(menu: &Menu) -> Result<(), std::io::Error> {
     for (key, value) in menu.iter() {
         println!("{}: {}", key, value.label);
     }
@@ -52,9 +53,9 @@ pub fn print_menu(menu: &Menu) {
         match &item.action {
             MenuAction::Execute(func) => func(),
             MenuAction::Submenu(submenu) => print_menu(&submenu),
-            MenuAction::Exit => println!("Leaving"),
+            MenuAction::Exit => Ok(println!("Leaving")),
         }
     } else {
-        println!("Invalid Choice!");
+        return Ok(());
     }
 }

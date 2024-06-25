@@ -1,5 +1,6 @@
 use std::collections::BTreeMap;
 
+mod models;
 mod ui;
 
 fn main() {
@@ -20,26 +21,19 @@ fn main() {
     main_menu.insert(
         "1",
         ui::MenuItem {
-            label: "Write a LinkedIn and Instagram Post",
-            action: ui::MenuAction::Execute(write_linkedin_and_instagram),
-        },
-    );
-    main_menu.insert(
-        "2",
-        ui::MenuItem {
             label: "Write a LinkedIn Post",
             action: ui::MenuAction::Execute(write_linkedin),
         },
     );
     main_menu.insert(
-        "3",
+        "2",
         ui::MenuItem {
             label: "Write a Instagram Post",
             action: ui::MenuAction::Execute(write_instagram),
         },
     );
     main_menu.insert(
-        "4",
+        "3",
         ui::MenuItem {
             label: "Exit",
             action: ui::MenuAction::Exit,
@@ -49,14 +43,10 @@ fn main() {
     ui::print_menu(&main_menu);
 }
 
-fn write_linkedin_and_instagram() {
-    println!("LinkedIn + Instagram");
+fn write_linkedin() -> Result<(), std::io::Error> {
+    models::write_linkedin_post()
 }
 
-fn write_linkedin() {
-    println!("LinkedIn");
-}
-
-fn write_instagram() {
-    println!("Instagram");
+fn write_instagram() -> Result<(), std::io::Error> {
+    models::write_instagram_post()
 }
